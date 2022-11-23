@@ -1,0 +1,19 @@
+{
+  "name": "curso-practico-apirest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeisonVasquezC/curso-api-rest-js-practico.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JeisonVasquezC/curso-api-rest-js-practico/issues"
+  },
+  "homepage": "https://github.com/JeisonVasquezC/curso-api-rest-js-practico#readme"
+}
