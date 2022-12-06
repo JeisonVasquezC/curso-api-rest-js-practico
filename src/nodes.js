@@ -22,5 +22,7 @@ const searchFormInput = $('#searchForm input'); // 21
 const searchFormBtn = $('#searchBtn'); // 23
 
 const trendingBtn = $('.trendingPreview-btn'); // 81
+
+const movieDetailTitle = $('.movieDetail-title');
 const movieDetailScore = $('.movieDetail-score'); // 82
 const movieDetailDescription = $('.movieDetail-description'); // 83
