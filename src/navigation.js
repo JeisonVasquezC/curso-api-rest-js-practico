@@ -1,5 +1,28 @@
+let maxPages = 100;
+let page = 0;
+let infiniteScroll;
+
+const creaetListLanguage = () =>{
+    const arrayLanguage = [{ language: 'English', iso: 'en' }, { language: 'Spanish', iso: 'es' }, { language: 'Portuguese Br', iso: 'pt-BR' }, { language: 'French', iso: 'fr' }];
+
+    arrayLanguage.forEach((item) => {
+        const optionLanguage = document.createElement('option');
+        optionLanguage.innerText = item.language
+        optionLanguage.value = item.iso;
+        languageUser() == [item.iso] ? optionLanguage.setAttribute('selected','') : console.log('no corresponde', item.language)
+        
+
+        selectLanguageUser.appendChild(optionLanguage);
+    });
+}
+
 const navigator = () => {
     console.log({ location });
+
+    if(infiniteScroll) {
+        window.removeEventListener('scroll', infiniteScroll, { passive: false });
+        infiniteScroll = undefined;
+    }
     
     location.hash.startsWith('#trends')    ? trendsPage()       :
     location.hash.startsWith('#search=')   ? searchPage()       :
@@ -9,6 +32,10 @@ const navigator = () => {
 
     document.documentElement.scrollTop = 0;
     document.scrollTop = 0;
+
+    if(infiniteScroll) {
+        window.addEventListener('scroll', infiniteScroll, { passive: false })
+    }
 };
 
 const trendsPage = () => {
@@ -23,11 +50,14 @@ const trendsPage = () => {
     searchForm.classList.add('inactive');
 
     trendingPreviewSection.classList.add('inactive');
+    likedMoviesSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
-
+    
     getTrendingMovies();
+
+    infiniteScroll = getPaginatedMoviesByTrending;
 };
 
 const searchPage = () => {
@@ -42,12 +72,15 @@ const searchPage = () => {
     searchForm.classList.remove('inactive');
 
     trendingPreviewSection.classList.add('inactive');
+    likedMoviesSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
 
     const [, query ] = location.hash.split('=');
     getMoviesBySearch(query);
+
+    infiniteScroll = getPaginatedMoviesBySearch(query);
 };
 
 const movieDetailPage = () => {
@@ -62,6 +95,7 @@ const movieDetailPage = () => {
     searchForm.classList.add('inactive');
 
     trendingPreviewSection.classList.add('inactive');
+    likedMoviesSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.add('inactive');scrollTop = 0;
     movieDetailSection.classList.remove('inactive');
@@ -82,6 +116,7 @@ const categoriesPage = () => {
     searchForm.classList.add('inactive');
 
     trendingPreviewSection.classList.add('inactive');
+    likedMoviesSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
@@ -93,6 +128,8 @@ const categoriesPage = () => {
 
     console.log(categoryId, categoryName);
     getMoviesByCategory(categoryId);
+
+    infiniteScroll = getPaginatedMoviesByCategory(categoriesPage);
 };
 
 const homePage = () => {
@@ -107,18 +144,19 @@ const homePage = () => {
     searchForm.classList.remove('inactive');
 
     trendingPreviewSection.classList.remove('inactive');
+    likedMoviesSection.classList.remove('inactive');
     categoriesPreviewSection.classList.remove('inactive');
     genericSection.classList.add('inactive');
     movieDetailSection.classList.add('inactive');
 
-    if(trendingMoviesPreviewList.children.length === 0){
-        console.log('Trending API');
-        getTrendingMoviesPreview();
-    };
-    if(categoriesPreviewList.children.length === 0){
-        console.log('Categories API');
-        getCategoriesPreviuew();
-    };
+    console.log('Trending API');
+    getTrendingMoviesPreview();
+
+    console.log('Categories API');
+    getCategoriesPreviuew();
+
+    console.log('Favorites Movies');
+    getLikedMovies();
 };
 
 
@@ -132,6 +170,14 @@ searchFormBtn.addEventListener('click', () => {
 });
 trendingBtn.addEventListener('click', () => location.hash = '#trends=');
 
+selectLanguageUser.addEventListener('change', (e) => {
+    e.stopPropagation();
+    // console.log(e.path[0].value);
+    language();
+    location.reload();
+})
+
+creaetListLanguage();
 window.addEventListener('DOMContentLoaded', navigator, false);
 window.addEventListener('hashchange', navigator, false);
-
+window.addEventListener('scroll', infiniteScroll, { passive: false });

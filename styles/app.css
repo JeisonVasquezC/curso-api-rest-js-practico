@@ -92,26 +92,83 @@ html {
   
   
   /* Shared */
-  .header-container, .trendingPreview-header, .categoriesPreview-container {
+  .header-container, .trendingPreview-header, .categoriesPreview-container, .liked-header {
     padding: 0 24px;
   }
   
-  .trendingPreview-container, .categoriesPreview-container, footer {
+  .trendingPreview-container, .categoriesPreview-container, .liked-container, footer {
     margin-top: 48px;
   }
   
-  .trendingPreview-header, .categoriesPreview-title {
+  .trendingPreview-header, .categoriesPreview-title, .liked-header {
     margin-bottom: 24px;
   }
   
   .movie-container {
     cursor: pointer;
+    position: relative;
+  }
+
+  .movie-container span {
+    color: var(--purple-light-2);
+    left: 0;
+    margin: auto;
+    padding: 10px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 100%;
   }
   
+  .movie-container--loading{
+    background: var(--purple-light-2);
+    border-radius: 8px;
+    height: 225px;
+    min-height: 225px;
+    max-height: 225px;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    margin-bottom: 15px;
+    animation: loading-skeleton infinite 1.5s;
+  }
+
+  .movie-container--loading:nth-child(2){
+    animation-delay: .2s;
+  }
+  .movie-container--loading:nth-child(3){
+    animation-delay: .4s;
+  }
+
   .movie-img {
     border-radius: 8px;
+    min-height: 230px;
   }
-  
+
+  .movie-btn {
+    position: absolute;
+    top:  5px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+
+  .movie-btn::before {
+    content: '🤍';
+    /* font-size: 20px; */
+  }
+
+  .movie-btn--liked {
+   background-color: var(--purple-light-2); 
+   box-shadow: 0px 0px 10px 2px var(--purple-dark-1);
+  }
+  .movie-btn--liked::before {
+    content: '💜';
+   }
+
   .categoriesPreview-list, .categories-list {
     display: flex;
     align-items: center;
@@ -119,7 +176,29 @@ html {
     position: relative;
     flex-wrap: wrap;
   }
-  
+
+  .category-container--loading{
+    background: var(--purple-light-2);
+    border-radius: 8px;
+    height: 25px;
+    min-height: 25px;
+    max-height: 25px;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    margin-bottom: 15px;
+    animation: loading-skeleton infinite 1.5s;
+  }
+
+  .category-container--loading:nth-child(2){
+    animation-delay: .2s;
+  }
+  .category-container--loading:nth-child(3){
+    animation-delay: .3s;
+  }
+  .category-container--loading:nth-child(4){
+    animation-delay: .4s;
+  }
   
   /* Header */
   .header-container {
@@ -178,7 +257,7 @@ html {
   
   
   /* Trending */
-  .trendingPreview-header {
+  .trendingPreview-header, .liked-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -190,7 +269,7 @@ html {
     width: 72px;
   }
   
-  .trendingPreview-movieList {
+  .trendingPreview-movieList, .liked-movieList {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
@@ -199,12 +278,14 @@ html {
     padding-bottom: 16px;
   }
   
-  .trendingPreview-movieList .movie-container {
+  .trendingPreview-movieList .movie-container, 
+  .liked-movieList .movie-container {
     display: inline-block;
     margin-right: 8px;
   }
   
-  .trendingPreview-movieList .movie-container .movie-img {
+  .trendingPreview-movieList .movie-container .movie-img,
+  .liked-movieList .movie-container .movie-img {
     height: 225px;
     min-height: 225px;
     max-height: 225px;
@@ -359,4 +440,14 @@ html {
   /* Navigation */
   .inactive {
     display: none;
+  }
+
+  /* Animations */
+  @keyframes loading-skeleton {
+    0%, 100% {
+      opacity: 100%;
+    }
+    50% {
+      opacity: 0%;
+    }
   }
